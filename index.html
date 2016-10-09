@@ -10,12 +10,31 @@
       <!-- Javascript -->
       <script>
          $(function() {
-            $( "#slider-1" ).slider();
+            $( "#slider-1" ).slider({
+				range: true,
+				min: 0,
+				max: 1000,
+				values: [ 35, 200 ],
+				slide: function( event, ui ) {
+					$( "#price" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+			  	}
+			});
+			$( "#price" ).val( "$" + $( "#slider-3" ).slider( "values", 0 ) +
+	        	" - $" + $( "#slider-3" ).slider( "values", 1 ) );
+	        });
          });
       </script>
    </head>
    <body>
       <!-- HTML -->
+	  <div>
+		<h3>Happiness Calculator</h3>
+	  </div>
+	  <p>
+         <label for="price">Price range:</label>
+         <input type="text" id="price"
+            style="border:0; color:#b9cd6d; font-weight:bold;">
+      </p>
       <div id="slider-1"></div>
    </body>
 </html>
