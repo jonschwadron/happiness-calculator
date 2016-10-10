@@ -10,18 +10,52 @@
       <!-- Javascript -->
       <script>
          $(function() {
-            $( "#slider-1" ).slider({
+
+			var salaryMin = 0,
+				salaryMax = 0,
+				expenseMin = 0,
+				expenseMax = 0;
+
+
+            $( "#slider-salary" ).slider({
 				range: true,
 				min: 0,
-				max: 1000,
-				values: [ 35, 200 ],
+				max: 200000,
+				values: [ 60000, 70000 ],
 				slide: function( event, ui ) {
-					$( "#price" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+					$( "#user-salary" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+					updateTotal();
 			  	}
 			});
-			$( "#price" ).val( "$" + $( "#slider-1" ).slider( "values", 0 ) +
-	        	" - $" + $( "#slider-1" ).slider( "values", 1 ) );
-	        });
+
+			$( "#slider-expense" ).slider({
+				range: true,
+				min: 0,
+				max: 10000,
+				values: [ 500, 2000 ],
+				slide: function( event, ui ) {
+					$( "#user-expense" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+					updateTotal();
+				},
+
+			});
+
+			$( "#user-salary" ).val( "$" + $( "#slider-salary" ).slider( "values", 0 )
+								+ " - $" + $( "#slider-salary" ).slider( "values", 1 ) );
+
+			$( "#user-expense" ).val( "$" + $( "#slider-expense" ).slider( "values", 0 )
+								  + " - $" + $( "#slider-expense" ).slider( "values", 1 ) );
+
+
+			// $( "#total" ).val( "$" + ($( "#slider-salary" ).slider( "values", 0 ) + $( "#slider-expense" ).slider( "values", 0 ))
+			//			     + " - $" + ($( "#slider-salary" ).slider( "values", 1 ) + $( "#slider-expense" ).slider( "values", 1 )));
+			function updateTotal() {
+				$min = ( $("#slider-salary").slider("values", 0) ) + ( $("#slider-expense").slider("values", 0) )      ;
+				$max = ( $("#slider-salary").slider("values", 1) ) + ( $("#slider-expense").slider("values", 1) ) ;
+				$total = $min + $max;
+			 	$("#total").val("$" + $total);
+			}
+		});
       </script>
    </head>
    <body>
@@ -30,10 +64,24 @@
 		<h3>Happiness Calculator</h3>
 	  </div>
 	  <p>
-         <label for="price">Price range:</label>
-         <input type="text" id="price"
-            style="border:0; color:#b9cd6d; font-weight:bold;">
+         <label for="slider-salary">Salary range:</label>
+         <input type="text"
+		 		id="user-salary"
+            	style="border:0; color:#b9cd6d; font-weight:bold;">
       </p>
-      <div id="slider-1"></div>
+      <div id="slider-salary"></div>
+	  <p>
+         <label for="slider-expense">Expense range:</label>
+         <input type="text"
+		 		id="user-expense"
+            	style="border:0; color:#b9cd6d; font-weight:bold;">
+      </p>
+      <div id="slider-expense"></div>
+	  <p>
+		  <label for="total">Total:</label>
+		  <input type="text"
+ 		 		id="total"
+             	style="border:0; color:#b9cd6d; font-weight:bold;">
+	  </p>
    </body>
 </html>
