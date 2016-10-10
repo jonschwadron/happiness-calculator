@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>jQuery UI Slider functionality</title>
+	<title>Happiness Calculator</title>
 
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -54,6 +54,11 @@
 		}
 	});
 	</script>
+	<style>
+	.row {
+	    height: 60px;
+	}
+	</style>
 </head>
 <body>
 	<!-- HTML -->
@@ -66,26 +71,35 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<p>
+					<div>
 						<label for="slider-salary">Salary range:</label>
 						<input type="text"
 						id="user-salary"
 						style="border:0; color:#b9cd6d; font-weight:bold;">
-					</p>
+					</div>
 					<div id="slider-salary"></div>
-					<p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div>
 						<label for="slider-expense">Monthly expense range:</label>
 						<input type="text"
 						id="user-expense"
 						style="border:0; color:#b9cd6d; font-weight:bold;">
-					</p>
+					</div>
 					<div id="slider-expense"></div>
-					<p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div>
 						<label for="total">Disposable Cash:</label>
 						<input type="text"
 						id="total"
 						style="border:0; color:#b9cd6d; font-weight:bold;">
-					</p>
+					</div>
 				</div>
 			</div>
 		</container>
