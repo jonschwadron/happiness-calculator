@@ -11,17 +11,11 @@
       <script>
          $(function() {
 
-			var salaryMin = 0,
-				salaryMax = 0,
-				expenseMin = 0,
-				expenseMax = 0;
-
-
             $( "#slider-salary" ).slider({
 				range: true,
-				min: 0,
+				min: 30000,
 				max: 200000,
-				values: [ 60000, 70000 ],
+				values: [ 50000, 70000 ],
 				slide: function( event, ui ) {
 					$( "#user-salary" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
 					updateTotal();
@@ -31,13 +25,12 @@
 			$( "#slider-expense" ).slider({
 				range: true,
 				min: 0,
-				max: 10000,
-				values: [ 500, 2000 ],
+				max: 5000,
+				values: [ 75, 1250 ],
 				slide: function( event, ui ) {
 					$( "#user-expense" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
 					updateTotal();
-				},
-
+				}
 			});
 
 			$( "#user-salary" ).val( "$" + $( "#slider-salary" ).slider( "values", 0 )
@@ -46,14 +39,16 @@
 			$( "#user-expense" ).val( "$" + $( "#slider-expense" ).slider( "values", 0 )
 								  + " - $" + $( "#slider-expense" ).slider( "values", 1 ) );
 
-
-			// $( "#total" ).val( "$" + ($( "#slider-salary" ).slider( "values", 0 ) + $( "#slider-expense" ).slider( "values", 0 ))
-			//			     + " - $" + ($( "#slider-salary" ).slider( "values", 1 ) + $( "#slider-expense" ).slider( "values", 1 )));
 			function updateTotal() {
-				$min = ( $("#slider-salary").slider("values", 0) ) + ( $("#slider-expense").slider("values", 0) )      ;
-				$max = ( $("#slider-salary").slider("values", 1) ) + ( $("#slider-expense").slider("values", 1) ) ;
-				$total = $min + $max;
-			 	$("#total").val("$" + $total);
+				$minSalary  = ( $("#slider-salary").slider("values", 0) );
+				$maxSalary  = ( $("#slider-salary").slider("values", 1) );
+				$minExpense = ( $("#slider-expense").slider("values", 0) );
+				$maxExpense = ( $("#slider-expense").slider("values", 1) );
+				$minBiWeekly = $minSalary / 27;
+				$maxBiWeekly = $maxSalary / 27;
+				$minTotal = Math.round($minBiWeekly - $minExpense);
+				$maxTotal = Math.round($maxBiWeekly - $maxExpense);
+			 	$("#total").val("$" + $minTotal + " - $" + $maxTotal);
 			}
 		});
       </script>
@@ -71,14 +66,14 @@
       </p>
       <div id="slider-salary"></div>
 	  <p>
-         <label for="slider-expense">Expense range:</label>
+         <label for="slider-expense">Monthly expense range:</label>
          <input type="text"
 		 		id="user-expense"
             	style="border:0; color:#b9cd6d; font-weight:bold;">
       </p>
       <div id="slider-expense"></div>
 	  <p>
-		  <label for="total">Total:</label>
+		  <label for="total">Disposable Cash:</label>
 		  <input type="text"
  		 		id="total"
              	style="border:0; color:#b9cd6d; font-weight:bold;">
