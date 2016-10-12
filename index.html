@@ -16,8 +16,8 @@
 		$( "#slider-salary" ).slider({
 			value: 50000,
 			// range: true,
-			min: 30000,
-			max: 200000,
+			min: 1000,
+			max: 500000,
 			// values: [ 50000, 70000 ],
 			slide: function( event, ui ) {
 				$( "#user-salary" ).val( "$" + ui.value );
@@ -26,31 +26,59 @@
 			}
 		});
 
+		$( "#slider-tax" ).slider({
+			value: 25,
+			min: 10,
+			max: 40,
+			slide: function( event, ui ) {
+				$( "#user-tax" ).val( "$" + ui.values );
+				updateTotal();
+			}
+		});
+
 		$( "#slider-expense" ).slider({
 			range: true,
 			min: 0,
 			max: 5000,
-			values: [ 75, 1250 ],
+			values: [ 750, 1250 ],
 			slide: function( event, ui ) {
 				$( "#user-expense" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
 				updateTotal();
 			}
 		});
 
-		$( "#user-salary" ).val( "$" + $( "#slider-salary" ).slider( "values", 0 ) );
-
+		$( "#user-salary" ).val( "$" + $( "#slider-salary" ).slider( "value" ) );
 		$( "#user-expense" ).val( "$" + $( "#slider-expense" ).slider( "values", 0 )
 		+ " - $" + $( "#slider-expense" ).slider( "values", 1 ) );
 
+
+
 		function updateTotal() {
-			$minSalary  = ( $("#slider-salary").slider("values", 0) );
-			$maxSalary  = ( $("#slider-salary").slider("values", 1) );
-			$minExpense = ( $("#slider-expense").slider("values", 0) );
-			$maxExpense = ( $("#slider-expense").slider("values", 1) );
-			$minBiWeekly = $minSalary / 27;
-			$maxBiWeekly = $maxSalary / 27;
-			$minTotal = Math.round($minBiWeekly - $minExpense);
-			$maxTotal = Math.round($maxBiWeekly - $maxExpense);
+			$salary = $("#slider-salary").slider("value");
+
+			//assign tax bracket
+			if ($salary <= 9225) { $taxBracket = 10; }
+			else if ($salary >= 9226 && $salary <= 37450 ) { $taxBracket = 15; }
+			else if ($salary >= 37451 && $salary <= 90750) { $taxBracket = 25; }
+			else if ($salary >= 90751 && $salary <= 189300) { $taxBracket = 28; }
+			else if ($salary >= 189301 && $salary <= 411500) { $taxBracket = 33; }
+			else if ($salary >= 411501 && $salary <= 413200) { $taxBracket = 35; }
+			else if ($salary >= 413201) { $taxBracket = 39.6; }
+
+			//factor in tax
+			$salary = $salary - (($taxBracket / 100) * $salary) ;
+
+			$minExpense = $("#slider-expense").slider("values", 0);
+			$maxExpense = $("#slider-expense").slider("values", 1);
+
+			//convert to biweekly
+			$minBiWeekly = $salary / 26;
+			$maxBiWeekly = $salary / 26;
+
+			$minTotal = Math.round(($minBiWeekly * 2) - $minExpense);
+			$maxTotal = Math.round(($maxBiWeekly * 2) - $maxExpense);
+
+			$("#user-tax").val($taxBracket + "%");
 			$("#total").val("$" + $maxTotal + " to $" + $minTotal);
 		}
 	});
@@ -94,7 +122,17 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div>
-						<label for="total">Disposable Cash (per bi-weekly paycheck):</label>
+						<label for="user-tax">Tax:</label>
+						<input type="text" id="user-tax"
+						style="border:0; color:#b9cd6d; font-weight:bold;">
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div>
+						<label for="total">Disposable Cash (per month):</label>
 						<h2><input type="text" id="total"
 						style="border:0; color:#b9cd6d; font-weight:bold;"></h2>
 					</div>
