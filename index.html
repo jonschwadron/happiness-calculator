@@ -10,84 +10,8 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 
 	<!-- Javascript -->
-	<script>
-	$(function() {
-
-		$( "#slider-salary" ).slider({
-			value: 50000,
-			// range: true,
-			min: 1000,
-			max: 500000,
-			// values: [ 50000, 70000 ],
-			slide: function( event, ui ) {
-				$( "#user-salary" ).val( "$" + ui.value );
-				// $( "#user-salary" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-				updateTotal();
-			}
-		});
-
-		$( "#slider-tax" ).slider({
-			value: 25,
-			min: 10,
-			max: 40,
-			slide: function( event, ui ) {
-				$( "#user-tax" ).val( "$" + ui.values );
-				updateTotal();
-			}
-		});
-
-		$( "#slider-expense" ).slider({
-			range: true,
-			min: 0,
-			max: 5000,
-			values: [ 750, 1250 ],
-			slide: function( event, ui ) {
-				$( "#user-expense" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-				updateTotal();
-			}
-		});
-
-		$( "#user-salary" ).val( "$" + $( "#slider-salary" ).slider( "value" ) );
-		$( "#user-expense" ).val( "$" + $( "#slider-expense" ).slider( "values", 0 )
-		+ " - $" + $( "#slider-expense" ).slider( "values", 1 ) );
-
-
-
-		function updateTotal() {
-			$salary = $("#slider-salary").slider("value");
-
-			//assign tax bracket
-			if ($salary <= 9225) { $taxBracket = 10; }
-			else if ($salary >= 9226 && $salary <= 37450 ) { $taxBracket = 15; }
-			else if ($salary >= 37451 && $salary <= 90750) { $taxBracket = 25; }
-			else if ($salary >= 90751 && $salary <= 189300) { $taxBracket = 28; }
-			else if ($salary >= 189301 && $salary <= 411500) { $taxBracket = 33; }
-			else if ($salary >= 411501 && $salary <= 413200) { $taxBracket = 35; }
-			else if ($salary >= 413201) { $taxBracket = 39.6; }
-
-			//factor in tax
-			$salary = $salary - (($taxBracket / 100) * $salary) ;
-
-			$minExpense = $("#slider-expense").slider("values", 0);
-			$maxExpense = $("#slider-expense").slider("values", 1);
-
-			//convert to biweekly
-			$minBiWeekly = $salary / 26;
-			$maxBiWeekly = $salary / 26;
-
-			$minTotal = Math.round(($minBiWeekly * 2) - $minExpense);
-			$maxTotal = Math.round(($maxBiWeekly * 2) - $maxExpense);
-
-			$("#user-tax").val($taxBracket + "%");
-			$("#total").val("$" + $maxTotal + " to $" + $minTotal);
-		}
-	});
-	</script>
-	<style>
-	.row {
-	    height: 60px;
-	}
-	</style>
+	<script src="happiness.js"></script>
+	<link href="happiness.css" rel="stylesheet" />
 </head>
 <body>
 	<!-- HTML -->
@@ -132,7 +56,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div>
-						<label for="total">Disposable Cash (per month):</label>
+						<label for="total">Monthly Happiness Cash (ballpark):</label>
 						<h2><input type="text" id="total"
 						style="border:0; color:#b9cd6d; font-weight:bold;"></h2>
 					</div>
