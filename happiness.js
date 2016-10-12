@@ -13,15 +13,15 @@ $(function() {
 		}
 	});
 
-	$( "#slider-tax" ).slider({
-		value: 25,
-		min: 10,
-		max: 40,
-		slide: function( event, ui ) {
-			$( "#user-tax" ).val( "$" + ui.values );
-			updateTotal();
-		}
-	});
+	// $( "#slider-tax" ).slider({
+	// 	value: 25,
+	// 	min: 10,
+	// 	max: 40,
+	// 	slide: function( event, ui ) {
+	// 		$( "#user-tax" ).val( "$" + ui.values );
+	// 		updateTotal();
+	// 	}
+	// });
 
 	$( "#slider-expense" ).slider({
 		range: true,
@@ -39,6 +39,8 @@ $(function() {
 	+ " - $" + $( "#slider-expense" ).slider( "values", 1 ) );
 
 
+	$( "#slider-salary" ).draggable();
+	$( "#slider-expense" ).draggable();
 
 	function updateTotal() {
 		$salary = $("#slider-salary").slider("value");
